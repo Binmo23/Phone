@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="ko"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,user-scalable=no">
+<title>iPhone</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent;user-select:none}
+html,body{height:100%;background:#000;font-family:-apple-system,BlinkMacSystemFont,"SF Pro Text","Apple SD Gothic Neo","Noto Sans KR",sans-serif;overflow:hidden;color:#fff}
+body{display:flex;align-items:center;justify-content:center}
+#phone{position:relative;width:100vw;height:100dvh;overflow:hidden;background:#111 center/cover}
+@media(min-width:500px){#phone{width:390px;height:844px;border-radius:48px;border:8px solid #222}}
+.scr{position:absolute;inset:0;display:none;flex-direction:column}
+.scr.on{display:flex}
+.bg{position:absolute;inset:0;background:var(--wp) center/cover;z-index:0}
+.bg::after{content:"";position:absolute;inset:0;background:rgba(0,0,0,.18)}
+.z{position:relative;z-index:1}
+.sb{display:flex;justify-content:space-between;padding:calc(env(safe-area-inset-top,0px) + 12px) 28px 4px;font-size:15px;font-weight:600;position:relative;z-index:2}
+.hb{position:absolute;left:50%;bottom:calc(env(safe-area-inset-bottom,0px) + 8px);transform:translateX(-50%);width:134px;height:5px;border-radius:3px;background:#fff;z-index:50;cursor:pointer}
+.hb::before{content:"";position:absolute;inset:-14px -10px}
+.glass{background:rgba(255,255,255,.22);backdrop-filter:blur(24px) saturate(1.6);-webkit-backdrop-filter:blur(24px) saturate(1.6);border-radius:24px}
+/* lock */
+#lock .t{margin-top:70px;text-align:center;text-shadow:0 1px 8px rgba(0,0,0,.3)}
+#lock .d{font-size:19px;font-weight:500;opacity:.9}
+#lock .c{font-size:92px;font-weight:600;line-height:1.05}
+#lock .hint{position:absolute;bottom:50px;width:100%;text-align:center;font-size:13px;opacity:.7}
+#lock .scr-in{transition:transform .35s}
+/* home */
+.wg{display:flex;gap:12px;padding:12px 16px 0}
+.wg>div{flex:1;padding:14px;height:140px;display:flex;flex-direction:column;justify-content:space-between;font-size:13px}
+.wg b{font-size:34px;font-weight:300}
+.wg .ev{display:flex;gap:6px;align-items:center;padding:6px 8px;background:rgba(255,255,255,.2);border-radius:10px;font-size:12px}
+.grid{display:grid;grid-template-columns:repeat(4,1fr);gap:22px 0;padding:26px 14px}
+.ic{display:flex;flex-direction:column;align-items:center;gap:6px;font-size:11px;cursor:pointer;text-shadow:0 1px 3px rgba(0,0,0,.4)}
+.ic i,.dock i{font-style:normal;width:60px;height:60px;border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:28px;box-shadow:0 2px 8px rgba(0,0,0,.25)}
+.dock{position:absolute;left:12px;right:12px;bottom:calc(env(safe-area-inset-bottom,0px) + 24px);height:88px;display:flex;justify-content:space-around;align-items:center;z-index:2;border-radius:32px}
+.dock i{cursor:pointer}
+/* apps generic */
+.app{background:#fff;color:#000}
+.top{padding:calc(env(safe-area-inset-bottom,0px) + 0px)}
+.scroll{flex:1;overflow-y:auto;padding-bottom:40px}
+.appbar{padding:calc(env(safe-area-inset-top,0px) + 12px) 0 0}
+/* phone app */
+.ph h1{font-size:32px;padding:6px 18px 8px}
+.ph .hd{padding:10px 18px 4px;font-size:13px;color:#8e8e93;font-weight:600}
+.ph .r{display:flex;align-items:center;padding:9px 18px;border-bottom:.5px solid #e5e5ea;gap:10px}
+.ph .r .n{flex:1;font-size:17px;font-weight:500}.ph .r small{display:block;color:#8e8e93;font-size:13px;font-weight:400}
+.ph .r.m .n{color:#ff3b30}.ph .r time{color:#8e8e93;font-size:15px}
+.tabs{display:flex;justify-content:space-around;padding:8px 0 34px;border-top:.5px solid #d1d1d6;background:#f7f7f7;font-size:10px;color:#8e8e93}
+.tabs div{text-align:center}.tabs div.a{color:#007aff}.tabs b{display:block;font-size:22px;font-weight:400}
+/* kakao */
+.kk{background:#fff}
+.kk h2{font-size:20px;padding:calc(env(safe-area-inset-top,0px) + 14px) 18px 10px}
+.fr{display:flex;align-items:center;gap:12px;padding:10px 18px;cursor:pointer}
+.av{width:46px;height:46px;border-radius:18px;background:linear-gradient(135deg,#ffd9e0,#c8b6ff);display:flex;align-items:center;justify-content:center;font-weight:700;color:#fff;flex:none;background-size:cover;background-position:center}
+.fr.me .av{width:56px;height:56px;border-radius:22px}
+.sec{padding:6px 18px;font-size:12px;color:#8e8e93;border-top:.5px solid #eee}
+.ov{position:absolute;inset:0;z-index:20;display:none;flex-direction:column}.ov.on{display:flex}
+#kprof{background:linear-gradient(#6b7a99,#2d3446);align-items:center;color:#fff;justify-content:flex-end;padding-bottom:140px;gap:14px}
+#kprof .av{width:110px;height:110px;border-radius:42px;font-size:40px}
+#kprof .x{position:absolute;top:calc(env(safe-area-inset-top,0px) + 14px);left:20px;font-size:28px;cursor:pointer}
+#room{background:#b2c7da}
+.rh{display:flex;gap:14px;align-items:center;padding:calc(env(safe-area-inset-top,0px) + 12px) 16px 10px;background:#b2c7da;font-weight:600;font-size:17px}
+.rh span{cursor:pointer;font-size:22px}
+.msgs{flex:1;overflow-y:auto;padding:10px 12px;display:flex;flex-direction:column;gap:8px}
+.mr{display:flex;align-items:flex-end;gap:5px;justify-content:flex-end}
+.mr.o{justify-content:flex-start}
+.mr .b{background:#fee500;color:#000;padding:8px 11px;border-radius:12px;max-width:68%;font-size:15px;line-height:1.35;word-break:break-word}
+.mr.o .b{background:#fff}
+.mr .m{font-size:10px;color:#4a5560;text-align:right;line-height:1.3}.mr .m u{text-decoration:none;color:#f5a600;display:block;font-weight:700}
+.mr.o{flex-direction:row}.mr.o .m{order:2;text-align:left}.mr.o .m u{display:none}
+.inp{display:flex;gap:8px;padding:8px 12px 30px;background:#fff;align-items:center}
+.inp input{flex:1;border:0;background:#f2f2f2;border-radius:18px;padding:10px 14px;font-size:15px;outline:0;user-select:text}
+.inp button{border:0;background:#fee500;border-radius:16px;padding:9px 14px;font-weight:700}
+/* X */
+.tw{background:#000;color:#e7e9ea}
+.ban{height:110px;background:linear-gradient(120deg,#1d9bf0,#7856ff 60%,#f91880);margin-top:0;flex:none}
+.pro{padding:0 16px 10px;border-bottom:.5px solid #2f3336}
+.pro .av{width:76px;height:76px;border-radius:50%;margin-top:-38px;border:4px solid #000;font-size:28px}
+.pro h3{font-size:20px;margin-top:8px;display:flex;gap:6px;align-items:center}
+.pro p{color:#71767b;font-size:15px}
+.tl{display:flex;gap:10px;padding:12px 16px;border-bottom:.5px solid #2f3336}
+.tl .av{width:40px;height:40px;border-radius:50%;font-size:15px}
+.tl .h{font-size:15px}.tl .h b{color:#e7e9ea}.tl .h span{color:#71767b}
+.tl .tx{font-size:15px;margin:3px 0 8px;line-height:1.4}
+.tl .ac{display:flex;gap:34px;color:#71767b;font-size:13px}
+/* instagram call */
+#igc{background:radial-gradient(circle at 50% 30%,#2a1a33,#000 70%);align-items:center;justify-content:space-between;padding:calc(env(safe-area-inset-top,0px) + 110px) 0 120px}
+.big{width:130px;height:130px;border-radius:50%;background:linear-gradient(45deg,#feda75,#fa7e1e,#d62976,#962fbf,#4f5bd5);display:flex;align-items:center;justify-content:center;font-size:52px;font-weight:700;background-size:cover;background-position:center;animation:br 1.8s ease-in-out infinite}
+@keyframes br{50%{transform:scale(1.09);box-shadow:0 0 0 18px rgba(255,255,255,.07)}}
+.btns{display:flex;gap:90px}
+.rb{width:68px;height:68px;border-radius:50%;border:0;display:flex;align-items:center;justify-content:center;font-size:28px;color:#fff;cursor:pointer}
+#igv{background:#000}
+#igv video.main{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;background:linear-gradient(#2b2b3a,#101018)}
+#pip{position:absolute;top:calc(env(safe-area-inset-top,0px) + 70px);right:14px;width:100px;height:150px;border-radius:16px;overflow:hidden;z-index:5;touch-action:none;box-shadow:0 4px 14px rgba(0,0,0,.5);background:linear-gradient(#444,#222);border:1.5px solid rgba(255,255,255,.4)}
+#pip video{width:100%;height:100%;object-fit:cover;pointer-events:none}
+.ivt{position:absolute;top:calc(env(safe-area-inset-top,0px) + 14px);left:0;right:0;text-align:center;z-index:4;text-shadow:0 1px 6px #000}
+.ivt b{font-size:17px;display:block}.ivt span{font-size:14px;opacity:.9}
+.ivb{position:absolute;left:0;right:0;bottom:calc(env(safe-area-inset-bottom,0px) + 70px);display:flex;justify-content:center;gap:16px;z-index:4}
+.ivb .rb{width:56px;height:56px;font-size:23px;background:rgba(255,255,255,.22);backdrop-filter:blur(14px)}
+#cht{position:absolute;left:14px;bottom:calc(env(safe-area-inset-bottom,0px) + 180px);width:70%;z-index:4;display:flex;flex-direction:column;gap:4px;pointer-events:none}
+#cht div{font-size:14px;text-shadow:0 1px 4px #000,0 0 8px #000;animation:fo 1s 6s forwards}
+#cht div b{font-weight:600;margin-right:6px}
+@keyframes fo{to{opacity:0;height:0;margin:0}}
+.ivi{position:absolute;left:14px;right:14px;bottom:calc(env(safe-area-inset-bottom,0px) + 128px);z-index:6}
+.ivi input{width:100%;border-radius:22px;border:1px solid rgba(255,255,255,.7);background:rgba(0,0,0,.25);color:#fff;padding:10px 16px;font-size:15px;outline:0;user-select:text}
+.ivi input::placeholder{color:rgba(255,255,255,.85)}
+/* spotify */
+.sp{background:linear-gradient(#3a3a3a,#121212 340px);color:#fff}
+.sp .cv{width:220px;height:220px;margin:calc(env(safe-area-inset-top,0px) + 30px) auto 18px;background:linear-gradient(135deg,#2c2c2c,#111) center/cover;display:flex;align-items:center;justify-content:center;font-size:70px;color:#1db954;box-shadow:0 8px 30px rgba(0,0,0,.6);flex:none}
+.sp h1{font-size:24px;padding:0 18px}.sp .sub{padding:4px 18px 0;color:#b3b3b3;font-size:13px}
+.ctl{display:flex;align-items:center;gap:20px;padding:14px 18px;font-size:22px;color:#b3b3b3}
+.ctl .pl{margin-left:auto;width:54px;height:54px;border-radius:50%;background:#1db954;color:#000;display:flex;align-items:center;justify-content:center;font-size:22px;cursor:pointer}
+.sg{display:flex;align-items:center;padding:9px 18px;cursor:pointer}
+.sg .a{flex:1}.sg .a div{font-size:16px}.sg .a small{color:#b3b3b3;font-size:13px}
+.sg.on .a div{color:#1db954}
+.eq{display:none;gap:2px;align-items:flex-end;height:11px;margin-right:6px}.sg.on .eq{display:inline-flex}
+.eq s{width:2px;background:#1db954;animation:eq .8s infinite alternate}.eq s:nth-child(2){animation-delay:.2s}.eq s:nth-child(3){animation-delay:.4s}
+@keyframes eq{from{height:3px}to{height:11px}}
+.pp .eq s{animation-play-state:paused}
+#mini{position:absolute;left:8px;right:8px;bottom:calc(env(safe-area-inset-bottom,0px) + 26px);height:56px;border-radius:8px;background:#5a3a3a;display:none;align-items:center;gap:10px;padding:0 12px 0 8px;z-index:15;cursor:pointer;overflow:hidden}
+#mini.on{display:flex}
+#mini .th{width:40px;height:40px;border-radius:4px;background:#222 center/cover;display:flex;align-items:center;justify-content:center;color:#1db954}
+#mini .i{flex:1;min-width:0}#mini .i div{font-size:14px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}#mini .i small{font-size:12px;color:#ddd}
+#mini .bar{position:absolute;left:8px;right:8px;bottom:0;height:2px;background:rgba(255,255,255,.3)}#mini .bar i{display:block;height:100%;width:0;background:#fff}
+#full{background:linear-gradient(#5a3a3a,#121212 70%);align-items:center;padding:calc(env(safe-area-inset-top,0px) + 20px) 28px 50px;z-index:30;transform:translateY(100%);transition:transform .3s;display:flex}
+#full.on{transform:none}
+#full .cv{width:100%;aspect-ratio:1;max-width:340px;margin-top:30px;background:linear-gradient(135deg,#2c2c2c,#111) center/cover;display:flex;align-items:center;justify-content:center;font-size:90px;color:#1db954;box-shadow:0 8px 30px rgba(0,0,0,.6)}
+.fx{align-self:flex-start;font-size:26px;cursor:pointer}
+.nm{align-self:flex-start;margin-top:auto}.nm h2{font-size:22px}.nm p{color:#b3b3b3;font-size:15px}
+#sk{width:100%;margin-top:14px;accent-color:#fff}
+.tm{display:flex;justify-content:space-between;width:100%;font-size:11px;color:#b3b3b3}
+.tp{display:flex;justify-content:space-between;align-items:center;width:100%;font-size:26px;margin-top:10px}
+.tp .pb{width:66px;height:66px;border-radius:50%;background:#fff;color:#000;display:flex;align-items:center;justify-content:center;font-size:26px;cursor:pointer}
+.tp .g{color:#1db954}
+</style></head><body>
+<div id="phone">
+<!-- LOCK -->
+<div class="scr on" id="lock"><div class="bg"></div>
+<div class="sb"><span></span><span>●●●</span></div>
+<div class="t z"><div class="d" id="ld"></div><div class="c" id="lt"></div></div>
+<div class="hint z">위로 스와이프하여 열기</div><div class="hb" id="lhb"></div></div>
+<!-- HOME -->
+<div class="scr" id="home"><div class="bg"></div>
+<div class="sb"><span id="ht"></span><span>5G ▮</span></div>
+<div class="wg z"><div class="glass"><div id="wp"></div><b id="wt"></b><div id="wd"></div></div><div class="glass"><div style="font-weight:600">일정</div><div id="ev" style="display:flex;flex-direction:column;gap:6px"></div></div></div>
+<div class="grid z" id="grid"></div>
+<div class="dock glass" id="dock"></div></div>
+<!-- PHONE -->
+<div class="scr app ph" id="app-phone"><div class="appbar"><div style="display:flex;justify-content:space-between;padding:0 18px;color:#007aff;font-size:17px"><span></span><span>편집</span></div><h1>최근 통화</h1></div><div class="scroll" id="calls"></div>
+<div class="tabs"><div><b>★</b>즐겨찾기</div><div class="a"><b>◷</b>최근 기록</div><div><b>◉</b>연락처</div><div><b>⌗</b>키패드</div></div><div class="hb" style="background:#000"></div></div>
+<!-- KAKAO -->
+<div class="scr app kk" id="app-kakao"><h2>친구</h2><div class="scroll"><div class="fr me" id="kme"></div><div class="sec">친구 1</div><div class="fr" id="kfr"></div></div>
+<div class="ov" id="kprof"><span class="x">✕</span><div class="av"></div><b style="font-size:22px"></b></div>
+<div class="ov" id="room"><div class="rh"><span>‹</span><b id="rn"></b></div><div class="msgs" id="msgs"></div><div class="inp"><input id="mi" placeholder="메시지 입력"><button id="ms">전송</button></div></div>
+<div class="hb" style="background:#000"></div></div>
+<!-- X -->
+<div class="scr app tw" id="app-x"><div class="scroll" id="xs" style="padding-top:env(safe-area-inset-top,0px)"></div><div class="hb"></div></div>
+<!-- IG CALL -->
+<div class="scr" id="igc"><div style="text-align:center;margin-top:0"><div class="big" id="igav"></div><h2 id="ign" style="margin-top:22px;font-size:26px"></h2><p style="opacity:.75;margin-top:6px">Instagram 비디오 통화</p><p style="opacity:.6;margin-top:30px;font-size:14px">전화 오는 중…</p></div>
+<div class="btns"><button class="rb" style="background:#ff3b30" data-hang>✆</button><button class="rb" style="background:#34c759" id="acc">✆</button></div></div>
+<div class="scr" id="igv"><video class="main" id="v1" loop playsinline muted></video>
+<div class="ivt"><b id="ivn"></b><span id="ivtm">00:00</span></div>
+<div id="pip"><video id="v2" loop playsinline muted></video></div>
+<div id="cht"></div>
+<div class="ivi"><input id="ivin" placeholder="메시지 보내기…"></div>
+<div class="ivb"><button class="rb">⟲</button><button class="rb">🎤</button><button class="rb">📷</button><button class="rb" style="background:#ff3b30" data-hang>✆</button></div></div>
+<!-- SPOTIFY -->
+<div class="scr app sp" id="app-spotify"><div class="scroll" id="sps"></div>
+<div id="mini"><div class="th" id="mth"></div><div class="i"><div id="mti"></div><small id="mar"></small></div><span id="mpp" style="font-size:22px">▶</span><div class="bar"><i id="mpr"></i></div></div>
+<div class="scr" id="full"><span class="fx" id="fcl">⌄</span><div class="cv" id="fcv"></div><div class="nm"><h2 id="fti"></h2><p id="far"></p></div><input type="range" id="sk" min="0" max="1000" value="0"><div class="tm"><span id="tc">0:00</span><span id="tt">0:00</span></div>
+<div class="tp"><span>⤮</span><span id="prv">⏮</span><div class="pb" id="fpp">▶</div><span id="nxt">⏭</span><span class="g">⟳</span></div></div>
+<div class="hb" id="sphb"></div></div>
+</div>
+<script>
+const CONFIG = {
+  wallpaper: "", // 图片地址或 base64
+  userName: "비모",
+  contactName: "버미",
+  twitterHandle: "onlyfr_u0316",
+  weather: { place: "Taipei", temp: "20", desc: "summer", high: "24", low: "18" },
+  events: [ { time: "21:10", title: "Game" }, { time: "23:00", title: "버미랑 통화" } ],
+  calls: [
+    { group: "오늘", items: [ { type: "收", time: "20:58", count: "28" }, { type: "发", time: "19:40", count: "3" } ] },
+    { group: "어제", items: [ { type: "未接", time: "23:12", count: "5" }, { type: "收", time: "22:01", count: "" } ] }
+  ],
+  chat: [
+    { time: "20:22", text: "12" },
+    { from: "them", time: "20:23", text: "뭐해? 보고싶다" },
+    { time: "20:24", text: "나도 ㅎㅎ 이따 전화할게" }
+  ],
+  tweets: [ "I Lov u", "워아이니", "오늘도 네 생각" ],
+  instagram: {
+    callerName: "j4xb1mm6",
+    avatar: "",          // 头像图片(可选)
+    video: "call.mp4",   // 对方画面
+    video2: "me.mp4",    // 我的小窗画面
+    messages: [
+      { from: "对方", text: "자기야 보여?ㅎㅎ", delay: 3 },
+      { from: "我", text: "응 잘 보여 ㅎㅎ", delay: 4 },
+      { from: "对方", text: "오늘 하루 어땠어?", delay: 4 },
+      { from: "我", text: "너 보니까 다 풀렸어", delay: 4 },
+      { from: "对方", text: "나도ㅋㅋ 보고싶었어 진짜", delay: 4 },
+      { from: "我", text: "나도 많이 보고싶었어 💗", delay: 4 },
+      { from: "对方", text: "끊기 싫다…", delay: 5 },
+      { from: "我", text: "그럼 안 끊으면 되지 ㅎㅎ", delay: 4 }
+    ]
+  },
+  spotify: {
+    playlistName: "愛",
+    cover: "",
+    songs: [ { title: "愛你但說不出口", artist: "Karencici", audio: "" } ]
+  }
+};
+
+const $=s=>document.querySelector(s), $$=s=>[...document.querySelectorAll(s)];
+const C=CONFIG, ini=s=>[...(s||"?")][0];
+const css=u=>u?`url("${u}")`:"";
+$("#phone").style.setProperty("--wp", C.wallpaper?css(C.wallpaper):"linear-gradient(160deg,#ff9ac1,#8e7cff 55%,#3a1c71)");
+function show(id){$$(".scr:not(.ov)").forEach(e=>{if(e.parentElement.id==="phone")e.classList.remove("on")});$("#"+id).classList.add("on")}
+function home(){stopIg();stopSp(true);$$(".ov.on").forEach(o=>o.classList.remove("on"));show("home")}
+$$(".hb").forEach(h=>{if(h.id!=="lhb"&&h.id!=="sphb")h.onclick=home});$("#sphb").onclick=home;
+const pad=n=>String(n).padStart(2,"0");
+function tick(){const d=new Date();$("#lt").textContent=pad(d.getHours())+":"+pad(d.getMinutes());$("#ht").textContent=$("#lt").textContent;
+$("#ld").textContent=d.toLocaleDateString("ko-KR",{month:"long",day:"numeric",weekday:"long"})}
+tick();setInterval(tick,5000);
+// lock
+let y0=null;const lk=$("#lock");
+lk.onpointerdown=e=>y0=e.clientY;
+lk.onpointerup=e=>{if(y0!==null&&y0-e.clientY>60)show("home");y0=null};
+$("#lhb").onclick=()=>show("home");
+// home
+const w=C.weather;
+$("#wp").innerHTML="📍 "+w.place;$("#wt").textContent=w.temp+"°";$("#wd").innerHTML=w.desc+"<br>최고 "+w.high+"° 최저 "+w.low+"°";
+$("#ev").innerHTML=C.events.slice(0,2).map(e=>`<div class="ev"><b>${e.time}</b>${e.title}</div>`).join("");
+const apps=[["YouTube","▶","#ff0000"],["Spotify","♫","#1db954","spotify"],["Instagram","◎","linear-gradient(45deg,#feda75,#d62976,#4f5bd5)","ig"],["X","𝕏","#000","x"],["사진","✿","linear-gradient(135deg,#ffd166,#ef476f)"],["메모","✎","#ffd60a"],["지도","⌖","#34c759"],["설정","⚙","#8e8e93"]];
+$("#grid").innerHTML=apps.map(a=>`<div class="ic" data-a="${a[3]||""}"><i style="background:${a[2]}">${a[1]}</i>${a[0]}</div>`).join("");
+$("#dock").innerHTML=[["📞","#34c759","phone"],["💬","#fee500","kakao"],["✉","#34c759",""],["📷","#8e8e93",""]].map(a=>`<i style="background:${a[1]}" data-a="${a[2]}">${a[0]}</i>`).join("");
+$$("[data-a]").forEach(e=>e.onclick=()=>{const a=e.dataset.a;if(a==="ig")startCall();else if(a)show("app-"+a)});
+// phone
+const T={"发":["발신","발신"],"收":["수신","수신"],"未接":["부재중","부재중"]};
+$("#calls").innerHTML=C.calls.map(g=>`<div class="hd">${g.group}</div>`+g.items.map(i=>`<div class="r ${i.type==="未接"?"m":""}"><div class="n">${C.contactName}${i.count?` (${i.count})`:""}<small>${T[i.type]?T[i.type][0]:i.type}</small></div><time>${i.time}</time><span style="color:#007aff">ⓘ</span></div>`).join("")).join("");
+// kakao
+function av(el,n,url){el.style.backgroundImage=url?css(url):"";if(!url)el.textContent=ini(n)}
+$("#kme").innerHTML=`<div class="av">${ini(C.userName)}</div><b>${C.userName}</b>`;
+$("#kfr").innerHTML=`<div class="av">${ini(C.contactName)}</div><span>${C.contactName}</span>`;
+$("#kme").onclick=()=>{$("#kprof .av").textContent=ini(C.userName);$("#kprof b").textContent=C.userName;$("#kprof").classList.add("on")};
+$("#kprof .x").onclick=()=>$("#kprof").classList.remove("on");
+$("#rn").textContent=C.contactName;
+function addMsg(m){const o=m.from==="them",d=document.createElement("div");d.className="mr"+(o?" o":"");
+d.innerHTML=`<div class="m">${o?"":"<u>1</u>"}${m.time}</div><div class="b"></div>`;d.querySelector(".b").textContent=m.text;$("#msgs").append(d);$("#msgs").scrollTop=1e9}
+C.chat.forEach(addMsg);
+$("#kfr").onclick=()=>{$("#room").classList.add("on");$("#msgs").scrollTop=1e9};
+$("#room .rh span").onclick=()=>$("#room").classList.remove("on");
+function send(){const v=$("#mi").value.trim();if(!v)return;const d=new Date();addMsg({time:pad(d.getHours())+":"+pad(d.getMinutes()),text:v});$("#mi").value=""}
+$("#ms").onclick=send;$("#mi").onkeydown=e=>{if(e.key==="Enter")send()};
+// X
+const dts=["10월 20일","10월 18일","10월 15일","10월 11일","10월 3일"];
+$("#xs").innerHTML=`<div class="ban"></div><div class="pro"><div class="av">${ini(C.userName)}</div><h3>${C.userName} <span style="font-size:15px">🔒</span></h3><p>@${C.twitterHandle}</p></div>`+
+C.tweets.map((t,i)=>`<div class="tl"><div class="av">${ini(C.userName)}</div><div><div class="h"><b>${C.userName}</b> 🔒 <span>@${C.twitterHandle} · ${dts[i%5]}</span></div><div class="tx"></div><div class="ac"><span>💬 ${(i*3+2)%9}</span><span>⟲ ${(i*2)%5}</span><span>♡ ${(i*7+4)%23}</span><span>📊 ${(i*31+57)%400}</span></div></div></div>`).join("");
+$$("#xs .tx").forEach((e,i)=>e.textContent=C.tweets[i]);
+// Instagram
+const I=C.instagram;let ivT=null,ivS=[],t0=0;
+av($("#igav"),I.callerName,I.avatar);$("#ign").textContent=I.callerName;$("#ivn").textContent=I.callerName;
+function startCall(){show("igc")}
+function stopIg(){clearInterval(ivT);ivS.forEach(clearTimeout);ivS=[];[$("#v1"),$("#v2")].forEach(v=>{v.pause();v.removeAttribute("src");v.load()});$("#cht").innerHTML=""}
+$$("[data-hang]").forEach(b=>b.onclick=home);
+function bub(m){const d=document.createElement("div"),n=m.from==="我"?C.userName:I.callerName;d.innerHTML=`<b></b><span></span>`;d.firstChild.textContent=n;d.lastChild.textContent=m.text;
+const c=$("#cht");c.append(d);while(c.children.length>4)c.firstChild.remove();setTimeout(()=>d.remove(),7500)}
+$("#acc").onclick=()=>{show("igv");const v1=$("#v1"),v2=$("#v2");
+if(I.video)v1.src=I.video;if(I.video2)v2.src=I.video2;
+[v1,v2].forEach(v=>{v.muted=true;const p=v.play();if(p)p.catch(()=>{})});
+t0=Date.now();ivT=setInterval(()=>{const s=Math.floor((Date.now()-t0)/1e3);$("#ivtm").textContent=pad(Math.floor(s/60))+":"+pad(s%60)},500);
+let at=0;I.messages.forEach(m=>{at+=m.delay*1000;ivS.push(setTimeout(()=>bub(m),at))})};
+$("#igv").addEventListener("click",e=>{const v=$("#v1");if(v.muted&&!e.target.closest("input,button")){v.muted=false;v.play().catch(()=>{})}});
+$("#ivin").onkeydown=e=>{if(e.key==="Enter"&&e.target.value.trim()){bub({from:"我",text:e.target.value.trim()});e.target.value=""}};
+// drag pip
+(()=>{const p=$("#pip");let s=null;
+p.onpointerdown=e=>{p.setPointerCapture(e.pointerId);s={x:e.clientX-p.offsetLeft,y:e.clientY-p.offsetTop}};
+p.onpointermove=e=>{if(!s)return;const b=$("#phone");let l=e.clientX-s.x,t=e.clientY-s.y;
+l=Math.max(0,Math.min(b.clientWidth-p.offsetWidth,l));t=Math.max(0,Math.min(b.clientHeight-p.offsetHeight,t));
+p.style.left=l+"px";p.style.top=t+"px";p.style.right="auto"};
+p.onpointerup=()=>s=null})();
+// Spotify
+const S=C.spotify,songs=S.songs;let cur=-1,playing=false,pos=0,dur=200,aud=null,sT=null;
+const fm=s=>Math.floor(s/60)+":"+pad(Math.floor(s%60));
+const cov=(el,big)=>{el.style.backgroundImage=S.cover?css(S.cover):"";el.textContent=S.cover?"":"♪"};
+$("#sps").innerHTML=`<div class="cv" id="pcv"></div><h1>${S.playlistName}</h1><div class="sub">${C.userName} · ${songs.length}곡</div>
+<div class="ctl"><span>⤓</span><span>⇪</span><span>⋯</span><div style="flex:1"></div><span style="font-size:26px">⤮</span><div class="pl" id="bigpl">▶</div></div><div id="sl"></div>`;
+cov($("#pcv"));cov($("#mth"));cov($("#fcv"));
+$("#sl").innerHTML=songs.map((s,i)=>`<div class="sg" data-i="${i}"><div class="a"><div><span class="eq"><s></s><s></s><s></s></span><span class="t"></span></div><small></small></div><span style="color:#b3b3b3;font-size:20px">⋯</span></div>`).join("");
+$$("#sl .sg").forEach((e,i)=>{e.querySelector(".t").textContent=songs[i].title;e.querySelector("small").textContent=songs[i].artist;e.onclick=()=>play(i)});
+$("#bigpl").onclick=()=>cur<0?play(0):toggle();
+function ui(){$$("#sl .sg").forEach((e,i)=>e.classList.toggle("on",i===cur));$("#sl").classList.toggle("pp",!playing);
+const g=playing?"❚❚":"▶";$("#mpp").textContent=g;$("#fpp").textContent=g;$("#bigpl").textContent=g;
+if(cur>=0){const s=songs[cur];$("#mti").textContent=s.title;$("#mar").textContent=s.artist;$("#fti").textContent=s.title;$("#far").textContent=s.artist}}
+function play(i){stopSp();cur=i;pos=0;const s=songs[i];$("#mini").classList.add("on");
+if(s.audio){aud=new Audio(s.audio);aud.onloadedmetadata=()=>{dur=aud.duration;$("#tt").textContent=fm(dur)};aud.onended=nxt;aud.play().catch(()=>{});dur=s.duration||200}
+else dur=s.duration||200;
+$("#tt").textContent=fm(dur);playing=true;ui();loop()}
+function loop(){clearInterval(sT);sT=setInterval(()=>{if(!playing)return;
+if(aud){pos=aud.currentTime;if(aud.duration)dur=aud.duration}else{pos+=.25;if(pos>=dur)return nxt()}
+const r=pos/dur;$("#mpr").style.width=r*100+"%";$("#sk").value=r*1000;$("#tc").textContent=fm(pos);$("#tt").textContent=fm(dur)},250)}
+function toggle(){playing=!playing;if(aud)playing?aud.play():aud.pause();ui()}
+function nxt(){play((cur+1)%songs.length)}
+function stopSp(hide){clearInterval(sT);if(aud){aud.pause();aud=null}if(hide){playing=false;cur=-1;$("#mini").classList.remove("on");$("#full").classList.remove("on");ui()}}
+$("#sk").oninput=e=>{pos=e.target.value/1000*dur;if(aud)aud.currentTime=pos;$("#tc").textContent=fm(pos)};
+$("#mpp").onclick=e=>{e.stopPropagation();toggle()};$("#fpp").onclick=toggle;$("#nxt").onclick=nxt;$("#prv").onclick=()=>play((cur-1+songs.length)%songs.length);
+$("#mini").onclick=()=>$("#full").classList.add("on");$("#fcl").onclick=()=>$("#full").classList.remove("on");
+</script></body></html>
